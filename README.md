@@ -42,4 +42,4 @@ The specific data protocols are described in the file "data_merge.py";
 
 ## Pretrained extractor
 
-
+The source file of the pre-trained model is in "Representation.py", the model is trained with "train.py", and the hidden feature inference is done with "Inference.py".
