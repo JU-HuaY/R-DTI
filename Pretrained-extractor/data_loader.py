@@ -1,6 +1,6 @@
 import os
 import torch
-from torchvision.datasets.folder import default_loader  # 或者自己实现一个图像加载函数
+from torchvision.datasets.folder import default_loader
 from torch.utils.data import Dataset, DataLoader
 # from torch_geometric.loader import DataLoader
 import pickle
@@ -10,7 +10,7 @@ class Protein_pkl_Dataset(Dataset):
     def __init__(self, root_dir, transform=None):
         self.root_dir = root_dir
         self.transform = transform
-        self.data_path = [os.path.join(root_dir, f) for f in os.listdir(root_dir) if f.endswith(('.pickle'))]  # 根据实际情况调整图片格式
+        self.data_path = [os.path.join(root_dir, f) for f in os.listdir(root_dir) if f.endswith(('.pickle'))] 
 
     def __len__(self):
         return len(self.data_path)
@@ -59,8 +59,7 @@ def my_collate(batch):
         # New_prot_feature[i][0:len(res_seq[i]), :] = torch.tensor(prot_feature[i][:-1], dtype=torch.float)
     data = (New_res_vec, New_res_coos, New_prot_feature, New_prot_batch, B, N)
     return data
-
-# 使用ImageFolderDataset
+    
 if __name__ == "__main__":
     dataset = Protein_pkl_Dataset(root_dir='train')
     dataloader = DataLoader(dataset, batch_size=16, shuffle=True, num_workers=4, pin_memory=True, collate_fn=my_collate)
@@ -73,6 +72,3 @@ if __name__ == "__main__":
         print(prot_features.shape)
         if len(res_seqs) == 0:
             break
-
-
-# 然后像之前那样迭代dataloader进行训练或验证
