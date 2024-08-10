@@ -7,7 +7,6 @@ aa_codes = {
     'PRO': 'P', 'GLN': 'Q', 'ARG': 'R', 'SER': 'S',
     'THR': 'T', 'VAL': 'V', 'TYR': 'Y', 'TRP': 'W'}
 
-# 创建解析器对象
 def struc_res_coo(path):
     parser = PDBParser()
     structure = parser.get_structure('protein', path)
@@ -16,7 +15,6 @@ def struc_res_coo(path):
     for model in structure:
         for chain in model:
             for residue in chain:
-                # 跳过非标准残基
                 if residue.get_resname() == 'UNK':
                     continue
                 if residue.get_resname() == 'HOH':
