@@ -1,7 +1,7 @@
 import os
 import torch
 import torch.nn as nn
-from torchvision.datasets.folder import default_loader  # 或者自己实现一个图像加载函数
+from torchvision.datasets.folder import default_loader
 from torch.utils.data import Dataset, DataLoader
 import pickle
 import numpy as np
