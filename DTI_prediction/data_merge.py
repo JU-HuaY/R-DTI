@@ -112,10 +112,6 @@ def data_load(data_select, device):
         train_list = ["datasets/BindingDB"]
         test_list = ["datasets/BindingDB"]
         train_dataset, test_dataset, p_LMs, p_SPDs, d_LMs = merge(train_list, test_list, device)
-    elif data_select == "B_to_B_fine":
-        train_list = ["datasets/BindingDB/validation"]
-        test_list = ["datasets/BindingDB"]
-        train_dataset, test_dataset, p_LMs, p_SPDs, d_LMs = merge(train_list, test_list, device)
     elif data_select == "G_to_G":
         train_list = ["GPCRs"]
         test_list = ["GPCRs"]
