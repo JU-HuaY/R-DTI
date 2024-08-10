@@ -1,6 +1,6 @@
 # R-DTI
 R-DTI: Drug Target Interaction Prediction based on Second-Order Relevance Exploration
-<img src="./image/intro.jpg" alt="model"  width="70%"/>
+<img src="./image/intro.png" alt="model"  width="70%"/>
 
 ## Installation
 **Update**: Now the codes are compatible with PyTorch Geometric (PyG) >= 2.0.
@@ -17,7 +17,7 @@ BioPython | 1.79
 ### Install via conda yaml file (cuda 11.3)
 
 ## framework
-<img src="./image/framework.jpg" alt="model"  width="70%"/>
+<img src="./image/framework.png" alt="model"  width="70%"/>
 
 **Our model consists of two part: DTI prediction and Pretrained extractor**
 ## DTI prediction
