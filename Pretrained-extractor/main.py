@@ -21,12 +21,12 @@ class Trainer(object):
         # self.optimizer = Ranger(self.model.parameters(), lr=lr, weight_decay=weight_decay)
 
     def train(self, dataset):
-        loss_total, loss1_, loss2_, loss3_ = 0, 0, 0, 0
+        loss_total, loss1_, loss2_ = 0, 0, 0
         self.optimizer.zero_grad()
         dataloader = DataLoader(dataset, batch_size=self.batch_size, shuffle=True, num_workers=4, pin_memory=True,
                                 collate_fn=my_collate)
         for data in dataloader:
-            loss_all, loss1, loss2, loss3 = model(data, device)
+            loss_all, loss1, loss2 = model(data, device)
             loss_all.mean().backward()
             torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=10)
             self.optimizer.step()
@@ -34,9 +34,8 @@ class Trainer(object):
             loss_total += loss_all.mean().item()
             loss1_ += loss1.mean().item()
             loss2_ += loss2.mean().item()
-            loss3_ += loss3.mean().item()
             # loss_total2 += loss3.item()
-        return loss_total, loss1_, loss2_, loss3_
+        return loss_total, loss1_, loss2_
 
 
 class Tester(object):
@@ -45,7 +44,7 @@ class Tester(object):
         self.batch_size = batch_size
 
     def test(self, dataset):
-        loss_total, loss1_, loss2_, loss3_ = 0, 0, 0, 0
+        loss_total, loss1_, loss2_ = 0, 0, 0
 
         dataloader = DataLoader(dataset, batch_size=self.batch_size, shuffle=True, num_workers=4, pin_memory=True,
                                 collate_fn=my_collate)
@@ -54,9 +53,8 @@ class Tester(object):
             loss_total += loss_all.mean().item()
             loss1_ += loss1.mean().item()
             loss2_ += loss2.mean().item()
-            loss3_ += loss3.mean().item()
 
-        return loss_total, loss1_, loss2_, loss3_
+        return loss_total, loss1_, loss2_
 
 
     def save_Losses(self, Losses, filename):
@@ -91,8 +89,8 @@ if __name__ == "__main__":
     """Output files."""
     file_Losses = 'output/result/loss--' + setting + '.txt'
     file_model = 'output/model/' + setting
-    Losses = ('Epoch\tTime(sec)\tLoss_all\tLoss_1\tLoss_2\tLoss_3\t'
-              'loss_test\tloss1_test\tloss2_test\tloss3_test')
+    Losses = ('Epoch\tTime(sec)\tLoss_all\tLoss_1\tLoss_2\t'
+              'loss_test\tloss1_test\tloss2_test')
     with open(file_Losses, 'w') as f:
         f.write(Losses + '\n')
 
@@ -106,11 +104,11 @@ if __name__ == "__main__":
         if epoch % decay_interval == 0:
             trainer.optimizer.param_groups[0]['lr'] *= lr_decay
 
-        loss_total, loss1_, loss2_, loss3_ = trainer.train(train_dataset)
-        loss_test, loss1_test, loss2_test, loss3_test = tester.test(validation_dataset)
+        loss_total, loss1_, loss2_ = trainer.train(train_dataset)
+        loss_test, loss1_test, loss2_test = tester.test(validation_dataset)
         end = timeit.default_timer()
         time = end - start
-        Losses = [epoch, time, loss_total, loss1_, loss2_, loss3_, loss_test, loss1_test, loss2_test, loss3_test]
+        Losses = [epoch, time, loss_total, loss1_, loss2_, loss_test, loss1_test, loss2_test]
         print('\t'.join(map(str, Losses)))
         tester.save_Losses(Losses, file_Losses)
         if loss_test < loss_totals:
