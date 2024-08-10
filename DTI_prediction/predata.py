@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Oct 30 09:06:40 2020
-
-@author: 华阳
-"""
-
 import numpy as np
 from rdkit import Chem
 from rdkit.Chem.rdchem import BondType
