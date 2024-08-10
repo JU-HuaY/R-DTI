@@ -2,7 +2,6 @@
 # import shutil
 # import random
 #
-# # 原始数据集路径
 # original_dataset_path = "prot_t5"
 #
 # # 目标文件夹路径
