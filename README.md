@@ -44,7 +44,7 @@ The source file of the pre-trained model is in "Representation.py", the model is
 
 ## Datasets
 
-Dataset link: https://drive.google.com/file/d/1TLcGFcpmgFIPqm1aBw-EW23TdOy0z7rL/view?usp=share_link
+Public datasets link: https://drive.google.com/file/d/1TLcGFcpmgFIPqm1aBw-EW23TdOy0z7rL/view?usp=share_link
 
-BindingDB subsets: https://drive.google.com/file/d/1hSsu2D8XcRama_gnmp5FpxSEXi_wtbOV/view?usp=drive_link
+BindingDB subsets link: https://drive.google.com/file/d/1hSsu2D8XcRama_gnmp5FpxSEXi_wtbOV/view?usp=drive_link
 
