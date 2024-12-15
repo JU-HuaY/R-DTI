@@ -53,7 +53,7 @@ BindingDB subsets link: https://drive.google.com/file/d/1hSsu2D8XcRama_gnmp5FpxS
 @inproceedings{
 anonymous2024rdti,
 title={R-{DTI}: Drug Target Interaction Prediction based on Second-Order Relevance Exploration},
-author={Anonymous},
+author={Yang Hua and Tianyang Xu and Xiaoning Song and Zhenhua Feng and Rui Wang and Wenjie Zhang and Xiaojun Wu},
 booktitle={The 39th Annual AAAI Conference on Artificial Intelligence},
 year={2024},
 url={https://openreview.net/forum?id=HQ94vizk4V}
