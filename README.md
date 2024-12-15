@@ -48,3 +48,15 @@ Public datasets link: https://drive.google.com/file/d/1TLcGFcpmgFIPqm1aBw-EW23Td
 
 BindingDB subsets link: https://drive.google.com/file/d/1hSsu2D8XcRama_gnmp5FpxSEXi_wtbOV/view?usp=drive_link
 
+## Citation
+```
+@inproceedings{
+anonymous2024rdti,
+title={R-{DTI}: Drug Target Interaction Prediction based on Second-Order Relevance Exploration},
+author={Anonymous},
+booktitle={The 39th Annual AAAI Conference on Artificial Intelligence},
+year={2024},
+url={https://openreview.net/forum?id=HQ94vizk4V}
+}
+```
+
