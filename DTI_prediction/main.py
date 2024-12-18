@@ -256,8 +256,6 @@ if __name__ == "__main__":
     dataset_train, dataset_test, p_LMs, p_SPDs, d_LMs = data_load(data_select, device)
     setup_seed(2023)
     model = SPD_DTI(layer_gnn=layer_gnn, device=device, dropout=drop).to(device)
-    model_state_dict = torch.load("output/model/C_to_C")
-    model.load_state_dict(model_state_dict)
     # model = torch.nn.DataParallel(model, device_ids=[1], output_device=1)
     # model = model.module.to(torch.device('cpu'))
     trainer = Trainer(model, batch_size, lr, weight_decay)
