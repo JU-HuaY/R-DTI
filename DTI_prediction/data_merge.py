@@ -129,11 +129,11 @@ def data_load(data_select, device):
         test_list = ["datasets/celegans"]
         train_dataset, test_dataset, p_LMs, p_SPDs, d_LMs = merge(train_list, test_list, device)
     elif data_select == "Da_to_Da":
-        train_list = ["datasets/Davis", "datasets/Davis/split2"]
+        train_list = ["datasets/Davis"]
         test_list = ["datasets/Davis"]
         train_dataset, test_dataset, p_LMs, p_SPDs, d_LMs = merge(train_list, test_list, device, DTI=False)
     elif data_select == "K_to_K":
-        train_list = ["datasets/KIBA", "datasets/KIBA/split2"]
+        train_list = ["datasets/KIBA"]
         test_list = ["datasets/KIBA"]
         train_dataset, test_dataset, p_LMs, p_SPDs, d_LMs = merge(train_list, test_list, device, DTI=False)
     else:
