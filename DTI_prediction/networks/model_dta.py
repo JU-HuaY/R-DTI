@@ -387,11 +387,11 @@ def a2i(affinities, datasets="Davis"):
     interactions = torch.zeros(N, device='cuda')
     if datasets == "KIBA":
         for i in range(N):
-            if affinities[i] >= 12.1:
+            if affinities[i] > 12.1:
                 interactions[i] = 1
 
     else:
         for i in range(N):
-            if affinities[i] >= 7:
+            if affinities[i] > 5:
                 interactions[i] = 1
     return torch.LongTensor(interactions.to('cpu').numpy()).cuda()
