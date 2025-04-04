@@ -23,8 +23,8 @@ Then, we can run main.py. This file will also import "merge.py" and "model.py";
 The only thing we have to do is to write the data protocols and the save path;
               
 ```python
->>> data_select = "B_to_B"
->>> setting = "B_to_B"
+>>> data_select = "H_to_H"
+>>> setting = "H_to_H"
 >>> file_AUCs = 'output/result/AUCs--' + setting + '.txt'
 >>> file_model = 'output/model/' + setting
 ```
