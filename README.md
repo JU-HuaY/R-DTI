@@ -1,3 +1,6 @@
+# R-DTI
+<img src="./image/intro.jpg" alt="model"  width="70%"/>
+
 ## Installation
 **Update**: Now the codes are compatible with PyTorch Geometric (PyG) >= 2.0.
 ### Dependency
