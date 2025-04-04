@@ -112,10 +112,6 @@ def data_load(data_select, device):
         train_list = ["datasets/BindingDB"]
         test_list = ["datasets/BindingDB"]
         train_dataset, test_dataset, p_LMs, p_SPDs, d_LMs = merge(train_list, test_list, device)
-    elif data_select == "G_to_G":
-        train_list = ["GPCRs"]
-        test_list = ["GPCRs"]
-        train_dataset, test_dataset, p_LMs, p_SPDs, d_LMs = merge(train_list, test_list, device)
     elif data_select == "D_to_D":
         train_list = ["datasets/Drugbank"]
         test_list = ["datasets/Drugbank"]
