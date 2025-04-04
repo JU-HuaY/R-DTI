@@ -255,7 +255,7 @@ if __name__ == "__main__":
     dataset_train, dataset_test, p_LMs, p_SPDs, d_LMs = data_load(data_select, device)
     setup_seed(2023)
     model = SPD_DTI(layer_gnn=layer_gnn, device=device, dropout=drop).to(device)
-    model_state_dict = torch.load("output/model/B_to_B_spd9")
+    model_state_dict = torch.load("output/model/BindingDB") # Human, Celegans
     model.load_state_dict(model_state_dict)
     tester = Tester(model, batch_size)
 
