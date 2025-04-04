@@ -1,7 +1,3 @@
-# R-DTI
-R-DTI: Drug Target Interaction Prediction based on Second-Order Relevance Exploration
-<img src="./image/intro.png" alt="model"  width="70%"/>
-
 ## Installation
 **Update**: Now the codes are compatible with PyTorch Geometric (PyG) >= 2.0.
 ### Dependency
@@ -15,9 +11,6 @@ PyTorch Geometric | **2.0.0**
 RDKit | 2022.03
 BioPython | 1.79
 ### Install via conda yaml file (cuda 11.3)
-
-## framework
-<img src="./image/framework.png" alt="model"  width="70%"/>
 
 **Our model consists of two part: DTI prediction and Pretrained extractor**
 ## DTI prediction
@@ -47,16 +40,4 @@ The source file of the pre-trained model is in "Representation.py", the model is
 Public datasets link: https://drive.google.com/file/d/1TLcGFcpmgFIPqm1aBw-EW23TdOy0z7rL/view?usp=share_link
 
 BindingDB subsets link: https://drive.google.com/file/d/1hSsu2D8XcRama_gnmp5FpxSEXi_wtbOV/view?usp=drive_link
-
-## Citation
-```
-@inproceedings{
-anonymous2024rdti,
-title={R-DTI: Drug Target Interaction Prediction based on Second-Order Relevance Exploration},
-author={Yang Hua and Tianyang Xu and Xiaoning Song and Zhenhua Feng and Rui Wang and Wenjie Zhang and Xiaojun Wu},
-booktitle={The 39th Annual AAAI Conference on Artificial Intelligence},
-year={2024},
-url={https://openreview.net/forum?id=HQ94vizk4V}
-}
-```
 
