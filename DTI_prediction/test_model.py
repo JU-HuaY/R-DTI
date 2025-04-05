@@ -185,8 +185,10 @@ class Tester(object):
         i = 0
         molecule_words, molecule_atoms, molecule_adjs, proteins, sequences, smiles, labels = [], [], [], [], [], [], []
         for data in dataset:
-            i = i + 1
             molecule_word, molecule_atom, molecule_adj, protein, sequence, smile, label = data
+            if np.isnan(np.mean(d_LMs[smile])):
+                continue
+            i = i + 1
             molecule_words.append(molecule_word)
             molecule_atoms.append(molecule_atom)
             molecule_adjs.append(molecule_adj)
