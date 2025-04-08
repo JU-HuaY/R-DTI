@@ -11,6 +11,7 @@ import torch.optim as optim
 from sklearn.metrics import roc_auc_score, precision_score, recall_score,precision_recall_curve, auc
 from data_merge import data_load
 from networks.model import SPD_DTI
+from sklearn.model_selection import train_test_split
 torch.multiprocessing.set_start_method('spawn')
 
 def pack(molecule_words, molecule_atoms, molecule_adjs, proteins, sequences, smiles, labels, p_LMs, p_SPDs, d_LMs, device, sources=None):
@@ -254,6 +255,7 @@ if __name__ == "__main__":
         print('The code uses CPU!!!')
 
     dataset_train, dataset_test, p_LMs, p_SPDs, d_LMs = data_load(data_select, device)
+    train_set, val_set = train_test_split(dataset_train, test_size=0.2, random_state=42)
     setup_seed(2023)
     model = SPD_DTI(layer_gnn=layer_gnn, device=device, dropout=drop).to(device)
     # model = torch.nn.DataParallel(model, device_ids=[1], output_device=1)
@@ -279,8 +281,8 @@ if __name__ == "__main__":
         if epoch % decay_interval == 0:
             trainer.optimizer.param_groups[0]['lr'] *= lr_decay
 
-        loss_train = trainer.train(dataset_train, p_LMs, p_SPDs, d_LMs, epoch)
-        AUC, PRC, precision, recall = tester.test(dataset_test, p_LMs, p_SPDs, d_LMs)
+        loss_train = trainer.train(train_set, p_LMs, p_SPDs, d_LMs, epoch)
+        AUC, PRC, precision, recall = tester.test(val_set, p_LMs, p_SPDs, d_LMs)
 
         end = timeit.default_timer()
         time = end - start
