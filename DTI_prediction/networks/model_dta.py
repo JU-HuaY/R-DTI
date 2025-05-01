@@ -387,7 +387,7 @@ def a2i(affinities, datasets="Davis"):
     interactions = torch.zeros(N, device='cuda')
     if datasets == "KIBA":
         for i in range(N):
-            if affinities[i] >= 12.1:
+            if affinities[i] > 12.1:
                 interactions[i] = 1
 
     else:
