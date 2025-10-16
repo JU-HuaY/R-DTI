@@ -18,7 +18,7 @@ class Feature_Joint(nn.Module):
         return joint_feature
 
 class EnBaseLayer(nn.Module):
-    def __init__(self, hidden_dim, edge_feat_dim, update_x=True, norm=False):
+    def __init__(self, hidden_dim, edge_feat_dim, act_fn="relu", update_x=True, norm=False):
         super().__init__()
         self.r_min = 0.
         self.r_max = 10.
@@ -27,8 +27,8 @@ class EnBaseLayer(nn.Module):
         self.update_x = update_x
         self.act_fn = act_fn
         self.norm = norm
-        self.edge_mlp = MLP(2 * hidden_dim, hidden_dim, hidden_dim,
-                            num_layer=2, norm=norm, act_fn='relu', act_last=True)
+        self.edge_mlp = SPDMLP(2 * hidden_dim, hidden_dim, hidden_dim, num_layer=2)
+        #MLP(2 * hidden_dim, hidden_dim, hidden_dim, num_layer=2, norm=norm, act_fn='relu', act_last=True)
         self.FJ1 = Feature_Joint()
         self.FJ2 = Feature_Joint()
         self.edge_inf = nn.Sequential(nn.Linear(hidden_dim, 1), nn.Sigmoid())
@@ -68,7 +68,7 @@ class SPD_GNN(nn.Module):
         # Equivariant layers
         layers = []
         for l_idx in range(self.num_layers):
-            layer = EnBaseLayer(self.hidden_dim, self.edge_feat_dim,
+            layer = EnBaseLayer(16, 16,
                                 update_x=self.update_x, norm=self.norm)
             layers.append(layer)
         return nn.ModuleList(layers)

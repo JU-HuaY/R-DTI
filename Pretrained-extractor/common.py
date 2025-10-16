@@ -2,7 +2,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch_geometric.nn import knn_graph
-
+from spdnet.utils import *
+from spdnet.spd import *
+from torch.autograd import Function
 
 class GaussianSmearing(nn.Module):
     def __init__(self, start=0.0, stop=5.0, num_gaussians=50, fixed_offset=True):

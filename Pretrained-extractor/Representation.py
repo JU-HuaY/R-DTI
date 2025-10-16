@@ -78,7 +78,22 @@ class language_encoder(nn.Module):
         x = self.relu(x)
         return x
 
+class Covariance2(nn.Module):
 
+    def __init__(self, append_mean=False, epsilon=1e-3):
+        super(Covariance2, self).__init__()
+        self.append_mean = append_mean
+        self.epsilon = epsilon  # 小的常数用于添加到协方差矩阵的对角线上
+
+    def forward(self, input):
+
+        mean = torch.mean(input, 1, keepdim=True)
+        x = input - mean.expand(-1,  input.size(1), input.size(2))
+        output = torch.matmul(x, x.transpose(1, 2)) / input.size(1)
+        # 生成协方差矩阵的对角线正则化
+        I = torch.eye(output.size(2)).expand_as(output).to(input.device)
+        output += I * self.epsilon
+        return output
 class Covariance(nn.Module):
 
     def __init__(self, append_mean=False, epsilon=1e-3):
@@ -148,7 +163,6 @@ def cosine_similarity_loss(x, x_hat):
 def kl_divergence_logits(p_logits, q_logits):
     p_probs = nn.functional.softmax(p_logits, dim=-1)
     q_probs = nn.functional.softmax(q_logits, dim=-1)
-
     kl_loss = p_probs * (torch.log(p_probs + 1e-6) - torch.log(q_probs + 1e-6))  # 添加极小值避免 log(0)
     kl_loss = torch.mean(kl_loss)  # 对所有样本求平均
     return kl_loss
@@ -159,6 +173,7 @@ class Representation_model(nn.Module):
         self.num_layers = num_layers
         self.hidden_dim = hidden_dim
         self.covariance = Covariance()
+        self.covariance2 = Covariance2()
         self.edge_feat_dim = edge_feat_dim
         self.represent = nn.Embedding(25, hidden_dim)
         self.SPD_GNN = SPD_GNN(num_layers, hidden_dim, edge_feat_dim)
@@ -175,8 +190,8 @@ class Representation_model(nn.Module):
         h_vec = self.represent(h_vec.view(B * N))
         x_pos = x_pos.view(B * N, 3)
         prot_batchs = prot_batchs.view(B * N)
-        h_vec_co = self.covariance(h_vec.unsqueeze(3))
-        h_vec_co = self.ST_trans(h_vec_co)
+        h_vec_co = self.covariance2(h_vec.unsqueeze(2))
+        h_vec_co = self.ST_trans(h_vec_co.unsqueeze(1)).squeeze(1)
         h_vec_co, x_pos, outputs = self.SPD_GNN.forward(h_vec_co, x_pos, prot_batchs)
         h_vec_co = h_vec_co.view(B, N, 16, 16)
         h_vec_hidden_cpu = self.ReEig(h_vec_co)
@@ -187,10 +202,8 @@ class Representation_model(nn.Module):
         h_lm_co = self.LM_trans(h_lm_co)
         h_lm_hidden_cpu = self.LM_SPD(h_lm_co)
         h_lm_hidden = h_lm_hidden_cpu.to("cuda")
-
-        h_lm_out_pos = self.LM_decoder(h_lm_hidden)
-
-        return h_lm_out_pos, h_vec_hidden, h_lm_hidden
+        h_lm_out_pos = self.LM_decoder(h_lm_hidden.view(B, N, 256))
+        return h_lm_out_pos, h_vec_hidden.view(B, N, 256), h_lm_hidden.view(B, N, 256)
 
     def LM_generate(self, h_LM): # language model hide feature generation
         h_lm = self.LM_encoder.forward(h_LM.permute(0, 2, 1)).permute(0, 2, 1).detach()
@@ -203,16 +216,17 @@ class Representation_model(nn.Module):
 
     def __call__(self, data, device, train=True):
         res_seqs, res_cooss, prot_features, prot_batchs, B, N = data[0], data[1], data[2], data[3], data[4], data[5]
-        B_data = int(B/2)
+        # B_data = int(B/2) # DataParallel
         h_lm_out_pos, h_vec_hidden, h_lm_hidden \
-            = self.forward(res_seqs.to(device), res_cooss.to(device), prot_features.to(device), prot_batchs.to(device), B_data, N)
+            = self.forward(res_seqs.to(device), res_cooss.to(device), prot_features.to(device), prot_batchs.to(device), int(B), int(N))
         SL1_loss = nn.SmoothL1Loss()
         contrastive_loss = InfoNCELoss(temperature=0.1, normalize=True)
 
         if train:
             loss1, scores = contrastive_loss(h_vec_hidden, h_lm_hidden)
-            loss2 = SL1_loss(h_lm_out_pos, res_cooss)
+            loss2 = SL1_loss(h_lm_out_pos, res_cooss.to(device))
             loss_all = loss2 + loss1 * 0.1
+
             return loss_all, loss1, loss2
         else:
             loss1, scores = contrastive_loss(h_vec_hidden, h_lm_hidden)
